@@ -1,15 +1,34 @@
 <script>
-import Button from "./Button.svelte"
+import { createEventDispatcher } from "svelte";
 
-    const handleSubmit = () =>{
-        console.log("submitting..")
+    import Button from "./Button.svelte";
+
+
+    const dispatch = createEventDispatcher()
+
+    let input = "";
+    let todo = {
+      status:"active",
+      content:"",
+      edit:false
+    }
+
+
+    const handleAdd = () =>{
+        if(input.length === 0){
+            return;
+        }
+        dispatch("add",{
+            todo: {...todo,content:input,key:Math.ceil(Math.random() * 1000)}
+        })
+        input="";
     }
 </script>
 
 <section>
-    <form on:submit|preventDefault={handleSubmit}>
-        <input name="task" />
-        <Button name="Add"/>
+    <form on:submit|preventDefault={handleAdd}>
+        <input name="task" bind:value={input}/>
+        <Button name="Add" on:click={handleAdd}/>
     </form>
 </section>
 

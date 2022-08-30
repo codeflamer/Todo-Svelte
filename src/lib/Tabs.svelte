@@ -1,13 +1,23 @@
 <script>
-import Button from "./Button.svelte";
+    import ButtonTabs from "./ButtonTabs.svelte";
+    import { createEventDispatcher } from "svelte";
 
+    export let stages = [];
+
+    let dispatch = createEventDispatcher()
+
+    const handleSwitch = (e) =>{
+        dispatch("switch",{
+            name:e.detail.name
+        })
+    }
 </script>
 
 <section>
     <div class="tab-container">
-        <Button name="All" active={true}/>
-        <Button name="Active" active={false}/>
-        <Button name="Completed" active={false}/>
+        {#each stages as stage}
+            <ButtonTabs name={stage.name} active={stage.active} on:switch={handleSwitch}/>
+        {/each}
     </div>
 </section>
 

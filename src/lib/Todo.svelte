@@ -1,23 +1,89 @@
 
 <script>
+import { createEventDispatcher } from 'svelte';
 import Button from "./Button.svelte";
 
-export let content=""
+export let content="";
+export let status;
+export let id = "";
+export let edit;
+let editContent = content;
+
+$: check = status==="completed" ? true : false;
+
+let dispatch = createEventDispatcher();
+
+const handleEdit = () => {
+    dispatch("edit",{
+        id
+    })
+}
+
+const handleEdited = () =>{
+    dispatch("finishEdit",{
+        id,
+        content:editContent
+    })
+}
+
+const handleDelete = () => {
+    console.log("deleting...");
+    dispatch("delete",{
+        id
+    })
+}
+
+const changeState = () =>{
+    console.log("clicking on :",content );
+    // check = !check;
+    const timer = setTimeout(()=>{
+        if(check === false){
+            dispatch("completed",{
+                id
+            })
+        }
+        if(check === true){
+            dispatch("active",{
+                id
+            })
+        }
+
+        console.log("status: ",status)
+    },500)
+    return ()=>clearTimeout(timer);
+}
+
+console.log(status)
+
 
 </script>
 
 <section>
     <div class="todo-content">
         <label class="checkbox-container">
-            <p>{content}</p>
-            <input type="checkbox" checked/>
-            <span class="checkmark"></span>
+            <!-- checked={status === "completed"? true : false} -->
+            
+            <input  type="checkbox" checked={status === "completed" ? true : false}/>
+
+            <span class="checkmark" on:click={changeState}></span>
         </label>
+
+        {#if edit}
+            <form on:submit|preventDefault={handleEdited}>
+                <input type="text" bind:value={editContent} /> 
+                
+            </form>
+        {:else}
+            <p >{content}</p>
+            <h2>
+                {status === "completed" ? "completed" : "active"}
+            </h2>
+        {/if}
         
     </div>
     <div class="todo-action">
-        <Button name="Edit" active={false}/>
-        <Button name="Delete" del={true}/>
+        <Button name="Edit" active={false} on:click={handleEdit}/>
+        <Button name="Delete" del={true} on:click={handleDelete}/>
     </div>
 </section>
 
@@ -26,15 +92,27 @@ export let content=""
         margin-top:15px;
     }
     p{
-        font-size:16px;
+        font-size:18px;
         margin-top: 6px;
+        position:relative;
+        top:-5px;
     }
     .todo-content{
         display: flex;
         justify-items: center;
         align-items: center;
         gap:10px;
+        height:30px;
+        position: relative;
     }
+
+    .todo-content input[type="text"]{
+        /* border:0; */
+        outline:0;
+        font-size:16px;
+        padding:3px 8px;
+    }
+
     .todo-action{
         display: flex;
         margin-top:15px;
@@ -60,16 +138,18 @@ export let content=""
         opacity: 1;
         cursor: pointer;
         height: 0px;
-        width: 0;
+        width: 0px;
     }
     .checkmark {
         position: absolute;
-        top: 0;
+        top: -15px;
         left: 0;
         height: 30px;
         width: 30px;
         border:1px solid black;
+        
     }
+    
     .checkmark:hover{
         cursor: pointer;
     }
@@ -81,7 +161,8 @@ export let content=""
     }
 
     .checkbox-container input:checked ~ .checkmark:after {
-        display: block;
+        display: inline;
+        /* background-color:red; */
     }
 
     .checkmark:after {

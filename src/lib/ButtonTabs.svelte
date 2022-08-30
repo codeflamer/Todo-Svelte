@@ -1,13 +1,21 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+
     export let name="";
     export let active = true;
     export let del = false;
 
+    let dispatch = createEventDispatcher()
 
+    const handleSwitch = () =>{
+        dispatch("switch",{
+            name
+        })
+    }
 
 </script>
 
-<button type="button" class="{!active && "notActive"} {del && "delete"}" on:click>
+<button type="button" class="{!active && "notActive"} {del && "delete"}" on:click={handleSwitch}>
     {name}
 </button>
 
