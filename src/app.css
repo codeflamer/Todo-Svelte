@@ -1,0 +1,11 @@
+*,
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 18px;
+  /* font-family: "Dancing Script", cursive; */
+}
+body {
+  background-color: #e8e8e8;
+}
