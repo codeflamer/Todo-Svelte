@@ -36,37 +36,34 @@ const handleDelete = () => {
 const changeState = () =>{
     console.log("clicking on :",content );
     // check = !check;
-    const timer = setTimeout(()=>{
-        if(check === false){
-            dispatch("completed",{
-                id
-            })
-        }
-        if(check === true){
-            dispatch("active",{
-                id
-            })
-        }
 
-        console.log("status: ",status)
-    },500)
-    return ()=>clearTimeout(timer);
+    if(check === false){
+        dispatch("completed",{
+            id
+        })
+    }
+    if(check === true){
+        dispatch("active",{
+            id
+        })
+    }
+
+ 
 }
 
-console.log(status)
 
 
 </script>
 
 <section>
     <div class="todo-content">
-        <label class="checkbox-container">
-            <!-- checked={status === "completed"? true : false} -->
+        <!-- <label class="checkbox-container">
+            checked={status === "completed"? true : false}
             
-            <input  type="checkbox" checked={status === "completed" ? true : false}/>
+            <input  type="checkbox" checked={status === "completed" ? true : false} />
 
             <span class="checkmark" on:click={changeState}></span>
-        </label>
+        </label> -->
 
         {#if edit}
             <form on:submit|preventDefault={handleEdited}>
@@ -76,7 +73,7 @@ console.log(status)
         {:else}
             <p >{content}</p>
             <h2>
-                {status === "completed" ? "completed" : "active"}
+                ({status === "completed" ? "completed" : "active"})
             </h2>
         {/if}
         
@@ -84,6 +81,7 @@ console.log(status)
     <div class="todo-action">
         <Button name="Edit" active={false} on:click={handleEdit}/>
         <Button name="Delete" del={true} on:click={handleDelete}/>
+        <Button name="Finish" on:click={changeState} disabled={status === "completed" ? true : false}/>
     </div>
 </section>
 
@@ -176,4 +174,6 @@ console.log(status)
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
     }
+
+   
 </style>

@@ -1,14 +1,24 @@
 
 <script>
-import Button from "./Button.svelte";
+    import { createEventDispatcher } from "svelte";
 
+    import Button from "./Button.svelte";
 
+    const dispatch = createEventDispatcher()
+
+    const handleCheckAll = () =>{
+        dispatch("checkall")
+    }
+
+    const handleRemoveCompleted = () =>{
+        dispatch("removeCompleted")
+    }
 </script>
 
 <footer>
     <div class="container-footer">
-        <Button name="Check All"/>
-        <Button name="Remove Completed"/>
+        <Button name="Check All" on:click={handleCheckAll}/>
+        <Button name="Remove Completed" on:click={handleRemoveCompleted}/>
     </div>
 </footer>
 

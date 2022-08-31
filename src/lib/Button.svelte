@@ -2,12 +2,12 @@
     export let name="";
     export let active = true;
     export let del = false;
-
+    export let disabled = false;
 
 
 </script>
 
-<button type="button" class="{!active && "notActive"} {del && "delete"}" on:click>
+<button type="button" class="{!active && "notActive"} {del && "delete"} {disabled && "disabled"}" disabled={disabled} on:click>
     {name}
 </button>
 
@@ -39,5 +39,10 @@
     }
     .delete:hover{
         background: red;
+    }
+
+    .disabled{
+        cursor: not-allowed;
+        opacity: 0.5;
     }
 </style>

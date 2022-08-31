@@ -107,6 +107,24 @@ import Todos from "./lib/Todos.svelte";
       stages = editedStages;
   }
 
+  const handleCheckAll = (e) =>{
+    const copyArray = [...todos];
+    const editedArray = copyArray.map(todo =>{
+        todo.status = "completed"
+        return todo;
+    })
+    todos = editedArray;
+  }
+
+  const handleRemoveCompleted = (e) =>{
+    const copyArray = [...todos];
+    const editedArray = copyArray.map(todo =>{
+        todo.status = "active"
+        return todo;
+    })
+    todos = editedArray;
+  }
+
 </script>
 
 <main>
@@ -116,7 +134,7 @@ import Todos from "./lib/Todos.svelte";
       <Tabs stages={stages} on:switch={handleSwitch}/>
       <Todos {presentActive} {todos} on:edit={handleEdit} on:finishEdit={handleEdited} on:delete={handleDelete} on:completed={handleCompleted} on:active={handleActive}/>
       <hr/>
-      <Footer/>
+      <Footer on:checkall={handleCheckAll} on:removeCompleted={handleRemoveCompleted}/>
     </div>
 </main>
 
